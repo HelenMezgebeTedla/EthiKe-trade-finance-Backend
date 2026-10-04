@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from database import get_db
-from dependencies import assert_can_access_trader, get_current_user
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.schemas.sale import SaleCreate, SaleRead, SaleUpdate
 from app.services import sale as sale_service
+from database import get_db
+from dependencies import assert_can_access_trader, get_current_user
 
 router = APIRouter(
     prefix="/sales", tags=["Sale"], dependencies=[Depends(get_current_user)]

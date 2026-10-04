@@ -1,5 +1,3 @@
-from database import get_db
-from dependencies import get_current_user
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -8,6 +6,8 @@ from app.core.rate_limit import limiter
 from app.models.user import User
 from app.schemas.user import Token, UserCreate, UserRead
 from app.services import user as user_service
+from database import get_db
+from dependencies import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 

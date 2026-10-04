@@ -1,7 +1,8 @@
 import uuid
 
-from database import Base
 from sqlalchemy import DECIMAL, UUID, Column, Date, String
+
+from database import Base
 
 
 class PriceIndex(Base):

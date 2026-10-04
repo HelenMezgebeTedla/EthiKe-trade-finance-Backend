@@ -1,12 +1,13 @@
 from uuid import UUID
 
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+
 from app.core.security import decode_access_token
 from app.models.user import User, UserRole
 from app.repositories.user import user_repository
 from database import get_db
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 

@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from database import get_db
-from dependencies import get_current_user, require_roles
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.models.user import UserRole
 from app.schemas.price_index import PriceIndexCreate, PriceIndexRead, PriceIndexUpdate
 from app.services import price_index as price_index_service
+from database import get_db
+from dependencies import get_current_user, require_roles
 
 router = APIRouter(
     prefix="/price-index", tags=["PriceIndex"], dependencies=[Depends(get_current_user)]

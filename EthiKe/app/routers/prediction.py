@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from database import get_db
-from dependencies import assert_can_access_trader, get_current_user
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.schemas.prediction import PriceRecommendationResponse, RiskScoreResponse
 from app.services import prediction as prediction_service
+from database import get_db
+from dependencies import assert_can_access_trader, get_current_user
 
 router = APIRouter(
     prefix="/predictions", tags=["Prediction"], dependencies=[Depends(get_current_user)]

@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-import app.models
-from app.core.rate_limit import limiter
-from database import Base, engine
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+
+import app.models
+from app.core.rate_limit import limiter
+from database import Base, engine
 
 Base.metadata.create_all(bind=engine)
 
