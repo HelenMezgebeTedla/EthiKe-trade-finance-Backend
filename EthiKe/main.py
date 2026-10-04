@@ -11,9 +11,7 @@ from slowapi.errors import RateLimitExceeded
 
 import app.models
 from app.core.rate_limit import limiter
-from database import Base, engine
 
-Base.metadata.create_all(bind=engine)
 
 from app.routers import (
     auth,
