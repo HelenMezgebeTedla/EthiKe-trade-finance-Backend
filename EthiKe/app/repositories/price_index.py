@@ -1,5 +1,6 @@
-from app.models.price_index import PriceIndex
 from sqlalchemy.orm import Session
+
+from app.models.price_index import PriceIndex
 
 
 class PriceIndexRepository:

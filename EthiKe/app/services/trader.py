@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from app.repositories.trader import trader_repository
 from app.repositories.user import user_repository
 from app.schemas.trader import TraderCreate, TraderUpdate
@@ -8,7 +9,9 @@ from app.schemas.trader import TraderCreate, TraderUpdate
 def get_trader(db: Session, trader_id):
     trader = trader_repository.get(db, trader_id)
     if not trader:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Trader not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Trader not found"
+        )
     return trader
 
 

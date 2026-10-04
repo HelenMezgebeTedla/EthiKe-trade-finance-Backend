@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from app.repositories.price_index import price_index_repository
 from app.schemas.price_index import PriceIndexCreate, PriceIndexUpdate
 
@@ -7,7 +8,9 @@ from app.schemas.price_index import PriceIndexCreate, PriceIndexUpdate
 def get_price_index(db: Session, price_index_id):
     price_index = price_index_repository.get(db, price_index_id)
     if not price_index:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Price index point not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Price index point not found"
+        )
     return price_index
 
 
@@ -30,7 +33,9 @@ def replace_index_point(db: Session, price_index_id, data: PriceIndexCreate):
 
 def update_index_point(db: Session, price_index_id, data: PriceIndexUpdate):
     price_index = get_price_index(db, price_index_id)
-    return price_index_repository.update(db, price_index, data.model_dump(exclude_unset=True))
+    return price_index_repository.update(
+        db, price_index, data.model_dump(exclude_unset=True)
+    )
 
 
 def delete_index_point(db: Session, price_index_id):

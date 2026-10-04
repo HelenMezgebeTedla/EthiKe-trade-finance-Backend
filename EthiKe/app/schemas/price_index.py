@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -17,10 +17,10 @@ class PriceIndexCreate(PriceIndexBase):
 
 
 class PriceIndexUpdate(BaseModel):
-    country: Optional[str] = None
-    category: Optional[str] = None
-    month: Optional[date] = None
-    index_value: Optional[Decimal] = None
+    country: str | None = None
+    category: str | None = None
+    month: date | None = None
+    index_value: Decimal | None = None
 
 
 class PriceIndexRead(PriceIndexBase):

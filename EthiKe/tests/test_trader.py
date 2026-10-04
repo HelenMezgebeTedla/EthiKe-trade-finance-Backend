@@ -1,6 +1,8 @@
 def test_create_trader_success(client, auth_headers):
     response = client.post(
-        "/traders/", json={"name": "Almaz", "phone_number": "0911000111"}, headers=auth_headers
+        "/traders/",
+        json={"name": "Almaz", "phone_number": "0911000111"},
+        headers=auth_headers,
     )
     assert response.status_code == 201
     body = response.json()
@@ -37,9 +39,13 @@ def test_get_trader_not_found(client, admin_headers):
     assert response.status_code == 404
 
 
-def test_get_trader_forbidden_for_unrelated_trader(client, other_trader_headers, trader):
+def test_get_trader_forbidden_for_unrelated_trader(
+    client, other_trader_headers, trader
+):
     """A trader with no ownership of this trader_id gets 403, not a 404 leak."""
-    response = client.get(f"/traders/{trader['trader_id']}", headers=other_trader_headers)
+    response = client.get(
+        f"/traders/{trader['trader_id']}", headers=other_trader_headers
+    )
     assert response.status_code == 403
 
 
@@ -49,7 +55,11 @@ def test_get_trader_malformed_uuid_is_validation_error(client, auth_headers):
 
 
 def test_patch_trader(client, auth_headers, trader):
-    response = client.patch(f"/traders/{trader['trader_id']}", json={"city": "Bahir Dar"}, headers=auth_headers)
+    response = client.patch(
+        f"/traders/{trader['trader_id']}",
+        json={"city": "Bahir Dar"},
+        headers=auth_headers,
+    )
     assert response.status_code == 200
     assert response.json()["city"] == "Bahir Dar"
 
@@ -80,6 +90,8 @@ def test_delete_trader_not_found(client, admin_headers):
     fake_id = "00000000-0000-0000-0000-000000000000"
     response = client.delete(f"/traders/{fake_id}", headers=admin_headers)
     assert response.status_code == 404
+
+
 def test_get_trader_unauthenticated_is_401(client, trader):
     response = client.get(f"/traders/{trader['trader_id']}")
     assert response.status_code == 401

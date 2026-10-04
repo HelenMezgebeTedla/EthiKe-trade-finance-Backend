@@ -1,5 +1,6 @@
-from app.models.purchase import Purchase
 from sqlalchemy.orm import Session
+
+from app.models.purchase import Purchase
 
 
 class PurchaseRepository:

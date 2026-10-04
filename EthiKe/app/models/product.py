@@ -1,14 +1,19 @@
-from sqlalchemy import Column, String, DECIMAL, ForeignKey, UUID
-from sqlalchemy.orm import relationship
 import uuid
+
 from database import Base
+from sqlalchemy import DECIMAL, UUID, Column, ForeignKey, String
+from sqlalchemy.orm import relationship
 
 
 class Product(Base):
     __tablename__ = "products"
 
-    product_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, autoincrement=False)
-    trader_id = Column(UUID(as_uuid=True), ForeignKey("traders.trader_id"), nullable=False)
+    product_id = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, autoincrement=False
+    )
+    trader_id = Column(
+        UUID(as_uuid=True), ForeignKey("traders.trader_id"), nullable=False
+    )
     product_name = Column(String, nullable=False)
     category = Column(String, nullable=True)
     unit = Column(String, nullable=True)

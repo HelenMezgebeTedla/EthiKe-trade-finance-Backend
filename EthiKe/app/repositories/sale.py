@@ -1,5 +1,6 @@
-from app.models.sale import Sale
 from sqlalchemy.orm import Session
+
+from app.models.sale import Sale
 
 
 class SaleRepository:

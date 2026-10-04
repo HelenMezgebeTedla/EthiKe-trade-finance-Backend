@@ -1,14 +1,17 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from app.repositories.purchase import purchase_repository
+
 from app.repositories.product import product_repository
+from app.repositories.purchase import purchase_repository
 from app.schemas.purchase import PurchaseCreate, PurchaseUpdate
 
 
 def get_purchase(db: Session, purchase_id):
     purchase = purchase_repository.get(db, purchase_id)
     if not purchase:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Purchase not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Purchase not found"
+        )
     return purchase
 
 
@@ -35,7 +38,7 @@ def update_purchase(db: Session, purchase_id, data: PurchaseUpdate):
     if "quantity" in updates:
         product = product_repository.get(db, purchase.product_id)
         if product:
-            product.current_stock_quantity += (updates["quantity"] - purchase.quantity)
+            product.current_stock_quantity += updates["quantity"] - purchase.quantity
     return purchase_repository.update(db, purchase, updates)
 
 

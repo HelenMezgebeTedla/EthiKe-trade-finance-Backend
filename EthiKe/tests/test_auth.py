@@ -1,7 +1,12 @@
 def test_register_success(client):
     response = client.post(
         "/auth/register",
-        json={"username": "newuser", "email": "newuser@example.com", "password": "Passw0rd!", "role": "trader"},
+        json={
+            "username": "newuser",
+            "email": "newuser@example.com",
+            "password": "Passw0rd!",
+            "role": "trader",
+        },
     )
     assert response.status_code == 201
     body = response.json()
@@ -12,7 +17,11 @@ def test_register_success(client):
 def test_register_duplicate_username_fails(client, admin_credentials):
     response = client.post(
         "/auth/register",
-        json={"username": admin_credentials["username"], "email": "other@example.com", "password": "Passw0rd!"},
+        json={
+            "username": admin_credentials["username"],
+            "email": "other@example.com",
+            "password": "Passw0rd!",
+        },
     )
     assert response.status_code == 400
 
@@ -20,7 +29,11 @@ def test_register_duplicate_username_fails(client, admin_credentials):
 def test_register_duplicate_email_fails(client, admin_credentials):
     response = client.post(
         "/auth/register",
-        json={"username": "someone_else", "email": "admin@example.com", "password": "Passw0rd!"},
+        json={
+            "username": "someone_else",
+            "email": "admin@example.com",
+            "password": "Passw0rd!",
+        },
     )
     assert response.status_code == 400
 
@@ -33,7 +46,11 @@ def test_register_missing_field_is_validation_error(client):
 def test_register_short_password_is_validation_error(client):
     response = client.post(
         "/auth/register",
-        json={"username": "shortpw", "email": "shortpw@example.com", "password": "short"},
+        json={
+            "username": "shortpw",
+            "email": "shortpw@example.com",
+            "password": "short",
+        },
     )
     assert response.status_code == 422
 
@@ -41,7 +58,10 @@ def test_register_short_password_is_validation_error(client):
 def test_login_success_returns_jwt(client, admin_credentials):
     response = client.post(
         "/auth/login",
-        data={"username": admin_credentials["username"], "password": admin_credentials["password"]},
+        data={
+            "username": admin_credentials["username"],
+            "password": admin_credentials["password"],
+        },
     )
     assert response.status_code == 200
     body = response.json()
@@ -58,7 +78,9 @@ def test_login_wrong_password_fails(client, admin_credentials):
 
 
 def test_login_unknown_user_fails(client):
-    response = client.post("/auth/login", data={"username": "ghost", "password": "whatever"})
+    response = client.post(
+        "/auth/login", data={"username": "ghost", "password": "whatever"}
+    )
     assert response.status_code == 401
 
 
@@ -68,7 +90,9 @@ def test_protected_endpoint_without_token_is_unauthorized(client):
 
 
 def test_protected_endpoint_with_bad_token_is_unauthorized(client):
-    response = client.get("/traders/", headers={"Authorization": "Bearer not-a-real-token"})
+    response = client.get(
+        "/traders/", headers={"Authorization": "Bearer not-a-real-token"}
+    )
     assert response.status_code == 401
 
 

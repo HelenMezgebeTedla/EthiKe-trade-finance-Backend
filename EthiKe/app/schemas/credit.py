@@ -1,8 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
+
 from app.models.credit import CreditStatus
 
 
@@ -10,7 +11,7 @@ class CreditBase(BaseModel):
     trader_id: UUID
     customer_name: str
     amount_owed: Decimal
-    due_date: Optional[datetime] = None
+    due_date: datetime | None = None
 
 
 class CreditCreate(CreditBase):
@@ -18,10 +19,10 @@ class CreditCreate(CreditBase):
 
 
 class CreditUpdate(BaseModel):
-    customer_name: Optional[str] = None
-    amount_owed: Optional[Decimal] = None
-    due_date: Optional[datetime] = None
-    status: Optional[CreditStatus] = None
+    customer_name: str | None = None
+    amount_owed: Decimal | None = None
+    due_date: datetime | None = None
+    status: CreditStatus | None = None
 
 
 class CreditRepay(BaseModel):

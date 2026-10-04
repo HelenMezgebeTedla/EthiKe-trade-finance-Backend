@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from app.repositories.product import product_repository
 from app.schemas.product import ProductCreate, ProductUpdate
 
@@ -7,7 +8,9 @@ from app.schemas.product import ProductCreate, ProductUpdate
 def get_product(db: Session, product_id):
     product = product_repository.get(db, product_id)
     if not product:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
     return product
 
 

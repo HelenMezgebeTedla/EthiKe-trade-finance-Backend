@@ -1,31 +1,31 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
+import app.models
+from app.core.rate_limit import limiter
+from database import Base, engine
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from database import Base, engine
-import app.models
-from app.core.rate_limit import limiter
-
 Base.metadata.create_all(bind=engine)
 
 from app.routers import (
     auth,
-    user,
-    trader,
-    transaction,
+    cash_snapshot,
+    credit,
+    prediction,
+    price_index,
     product,
     purchase,
     sale,
-    credit,
-    price_index,
-    cash_snapshot,
-    prediction,
+    trader,
+    transaction,
+    user,
 )
 
 app = FastAPI(title="Trader Financial Resilience API", version="2")
@@ -47,7 +47,9 @@ async def security_headers_middleware(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "no-referrer"
-    response.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains"
+    response.headers["Strict-Transport-Security"] = (
+        "max-age=63072000; includeSubDomains"
+    )
     return response
 
 

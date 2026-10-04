@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Depends, status, Request
+from database import get_db
+from dependencies import get_current_user
+from fastapi import APIRouter, Depends, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from database import get_db
+
 from app.core.rate_limit import limiter
-from app.schemas.user import UserCreate, UserRead, Token
-from app.services import user as user_service
-from dependencies import get_current_user
 from app.models.user import User
+from app.schemas.user import Token, UserCreate, UserRead
+from app.services import user as user_service
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -19,7 +20,11 @@ def register(request: Request, data: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=Token)
 @limiter.limit("10/minute")
-def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+def login(
+    request: Request,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
     """OAuth2-standard login: send as form data (username, password), not JSON.
     This is what makes the Swagger UI's 'Authorize' button work out of the box.
     Rate-limited to blunt password-guessing attacks."""

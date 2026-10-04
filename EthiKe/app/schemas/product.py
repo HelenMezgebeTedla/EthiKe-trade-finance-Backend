@@ -1,15 +1,15 @@
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
 class ProductBase(BaseModel):
     trader_id: UUID
     product_name: str
-    category: Optional[str] = None
-    unit: Optional[str] = None
-    current_stock_quantity: Decimal = Decimal("0")
+    category: str | None = None
+    unit: str | None = None
+    current_stock_quantity: Decimal = Decimal(0)
 
 
 class ProductCreate(ProductBase):
@@ -17,10 +17,10 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(BaseModel):
-    product_name: Optional[str] = None
-    category: Optional[str] = None
-    unit: Optional[str] = None
-    current_stock_quantity: Optional[Decimal] = None
+    product_name: str | None = None
+    category: str | None = None
+    unit: str | None = None
+    current_stock_quantity: Decimal | None = None
 
 
 class ProductRead(ProductBase):

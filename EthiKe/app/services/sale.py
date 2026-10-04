@@ -1,7 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from app.repositories.sale import sale_repository
+
 from app.repositories.product import product_repository
+from app.repositories.sale import sale_repository
 from app.repositories.transaction import transaction_repository
 from app.schemas.sale import SaleCreate, SaleUpdate
 
@@ -9,7 +10,9 @@ from app.schemas.sale import SaleCreate, SaleUpdate
 def get_sale(db: Session, sale_id):
     sale = sale_repository.get(db, sale_id)
     if not sale:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found"
+        )
     return sale
 
 
@@ -22,7 +25,9 @@ def get_sale_trader_id(db: Session, sale):
 def get_transaction_trader_id(db: Session, transaction_id):
     transaction = transaction_repository.get(db, transaction_id)
     if not transaction:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Transaction not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Transaction not found"
+        )
     return transaction.trader_id
 
 
@@ -47,7 +52,9 @@ def update_sale(db: Session, sale_id, data: SaleUpdate):
     if "quantity_sold" in updates:
         product = product_repository.get(db, sale.product_id)
         if product:
-            product.current_stock_quantity -= (updates["quantity_sold"] - sale.quantity_sold)
+            product.current_stock_quantity -= (
+                updates["quantity_sold"] - sale.quantity_sold
+            )
     return sale_repository.update(db, sale, updates)
 
 

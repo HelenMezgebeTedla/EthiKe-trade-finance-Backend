@@ -1,7 +1,8 @@
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, EmailStr, ConfigDict, Field
+
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
+
 from app.models.user import UserRole
 
 
@@ -10,14 +11,14 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
     role: UserRole = UserRole.TRADER
-    trader_id: Optional[UUID] = None
+    trader_id: UUID | None = None
 
 
 class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
-    role: Optional[UserRole] = None
-    trader_id: Optional[UUID] = None
-    is_active: Optional[bool] = None
+    email: EmailStr | None = None
+    role: UserRole | None = None
+    trader_id: UUID | None = None
+    is_active: bool | None = None
 
 
 class UserRead(BaseModel):
@@ -27,7 +28,7 @@ class UserRead(BaseModel):
     username: str
     email: EmailStr
     role: UserRole
-    trader_id: Optional[UUID] = None
+    trader_id: UUID | None = None
     is_active: bool
     created_at: datetime
 
@@ -38,4 +39,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    user_id: Optional[str] = None
+    user_id: str | None = None

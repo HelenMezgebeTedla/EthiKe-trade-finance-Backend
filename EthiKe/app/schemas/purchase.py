@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -10,7 +10,7 @@ class PurchaseBase(BaseModel):
     trader_id: UUID
     quantity: Decimal
     unit_cost_at_purchase: Decimal
-    supplier: Optional[str] = None
+    supplier: str | None = None
 
 
 class PurchaseCreate(PurchaseBase):
@@ -18,9 +18,9 @@ class PurchaseCreate(PurchaseBase):
 
 
 class PurchaseUpdate(BaseModel):
-    quantity: Optional[Decimal] = None
-    unit_cost_at_purchase: Optional[Decimal] = None
-    supplier: Optional[str] = None
+    quantity: Decimal | None = None
+    unit_cost_at_purchase: Decimal | None = None
+    supplier: str | None = None
 
 
 class PurchaseRead(PurchaseBase):

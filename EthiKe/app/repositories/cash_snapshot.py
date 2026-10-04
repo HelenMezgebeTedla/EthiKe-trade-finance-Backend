@@ -1,5 +1,6 @@
-from app.models.cash_snapshot import CashSnapshot
 from sqlalchemy.orm import Session
+
+from app.models.cash_snapshot import CashSnapshot
 
 
 class CashSnapshotRepository:

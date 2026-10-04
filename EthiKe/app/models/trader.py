@@ -1,14 +1,17 @@
-from sqlalchemy import Column, String, DateTime, UUID
+import uuid
+
+from database import Base
+from sqlalchemy import UUID, Column, DateTime, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-import uuid
-from database import Base
 
 
 class Trader(Base):
     __tablename__ = "traders"
 
-    trader_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, autoincrement=False)
+    trader_id = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, autoincrement=False
+    )
     name = Column(String, nullable=False)
     phone_number = Column(String(50), nullable=False, unique=True)
     business_type = Column(String, nullable=True)

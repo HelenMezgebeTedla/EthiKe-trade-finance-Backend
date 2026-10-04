@@ -1,13 +1,16 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from app.repositories.credit import credit_repository
-from app.schemas.credit import CreditCreate, CreditUpdate, CreditRepay
+from app.schemas.credit import CreditCreate, CreditRepay, CreditUpdate
 
 
 def get_credit(db: Session, credit_id):
     credit = credit_repository.get(db, credit_id)
     if not credit:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Credit record not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Credit record not found"
+        )
     return credit
 
 
@@ -41,5 +44,13 @@ def delete_credit(db: Session, credit_id):
 def repay_credit(db: Session, credit_id, data: CreditRepay):
     credit = get_credit(db, credit_id)
     new_repaid = credit.amount_repaid + data.amount
-    status_value = "closed" if new_repaid >= credit.amount_owed else "partial" if new_repaid > 0 else "open"
-    return credit_repository.update(db, credit, {"amount_repaid": new_repaid, "status": status_value})
+    status_value = (
+        "closed"
+        if new_repaid >= credit.amount_owed
+        else "partial"
+        if new_repaid > 0
+        else "open"
+    )
+    return credit_repository.update(
+        db, credit, {"amount_repaid": new_repaid, "status": status_value}
+    )

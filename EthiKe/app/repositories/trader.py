@@ -1,5 +1,6 @@
-from app.models.trader import Trader
 from sqlalchemy.orm import Session
+
+from app.models.trader import Trader
 
 
 class TraderRepository:

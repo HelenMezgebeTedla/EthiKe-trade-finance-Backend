@@ -1,9 +1,10 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
-from app.models.transaction import TransactionType, PaymentMethod
+
+from app.models.transaction import PaymentMethod, TransactionType
 
 
 class TransactionBase(BaseModel):
@@ -11,9 +12,9 @@ class TransactionBase(BaseModel):
     type: TransactionType
     amount: Decimal
     currency: str = "ETB"
-    payment_method: Optional[PaymentMethod] = None
-    counterparty: Optional[str] = None
-    notes: Optional[str] = None
+    payment_method: PaymentMethod | None = None
+    counterparty: str | None = None
+    notes: str | None = None
 
 
 class TransactionCreate(TransactionBase):
@@ -21,12 +22,12 @@ class TransactionCreate(TransactionBase):
 
 
 class TransactionUpdate(BaseModel):
-    type: Optional[TransactionType] = None
-    amount: Optional[Decimal] = None
-    currency: Optional[str] = None
-    payment_method: Optional[PaymentMethod] = None
-    counterparty: Optional[str] = None
-    notes: Optional[str] = None
+    type: TransactionType | None = None
+    amount: Decimal | None = None
+    currency: str | None = None
+    payment_method: PaymentMethod | None = None
+    counterparty: str | None = None
+    notes: str | None = None
 
 
 class TransactionRead(TransactionBase):

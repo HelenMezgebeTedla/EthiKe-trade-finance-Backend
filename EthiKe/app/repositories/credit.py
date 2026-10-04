@@ -1,5 +1,6 @@
-from app.models.credit import Credit
 from sqlalchemy.orm import Session
+
+from app.models.credit import Credit
 
 
 class CreditRepository:

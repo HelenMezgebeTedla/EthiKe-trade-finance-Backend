@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -17,8 +17,8 @@ class SaleCreate(SaleBase):
 
 
 class SaleUpdate(BaseModel):
-    quantity_sold: Optional[Decimal] = None
-    unit_sale_price: Optional[Decimal] = None
+    quantity_sold: Decimal | None = None
+    unit_sale_price: Decimal | None = None
 
 
 class SaleRead(SaleBase):

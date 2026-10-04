@@ -1,4 +1,5 @@
 import os
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -24,6 +25,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 def setup_database():
     Base.metadata.create_all(bind=engine)
     from app.core.rate_limit import limiter
+
     limiter.reset()
     yield
     Base.metadata.drop_all(bind=engine)
@@ -59,7 +61,9 @@ def _register(client, username, email, password, role):
 
 
 def _login(client, username, password):
-    response = client.post("/auth/login", data={"username": username, "password": password})
+    response = client.post(
+        "/auth/login", data={"username": username, "password": password}
+    )
     assert response.status_code == 200, f"Login failed: {response.text}"
     token = response.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
@@ -84,25 +88,34 @@ def trader_credentials(client):
 
 @pytest.fixture
 def trader_headers(client, trader_credentials):
-    return _login(client, trader_credentials["username"], trader_credentials["password"])
+    return _login(
+        client, trader_credentials["username"], trader_credentials["password"]
+    )
 
 
 @pytest.fixture
 def other_trader_credentials(client):
     """A second, unrelated trader account — used to prove one trader can't
     read or write another trader's data."""
-    _register(client, "other_trader", "other_trader@example.com", "OtherPass123!", "trader")
+    _register(
+        client, "other_trader", "other_trader@example.com", "OtherPass123!", "trader"
+    )
     return {"username": "other_trader", "password": "OtherPass123!"}
 
 
 @pytest.fixture
 def other_trader_headers(client, other_trader_credentials):
-    return _login(client, other_trader_credentials["username"], other_trader_credentials["password"])
+    return _login(
+        client,
+        other_trader_credentials["username"],
+        other_trader_credentials["password"],
+    )
 
 
 @pytest.fixture
 def auth_headers(trader_headers):
     return trader_headers
+
 
 @pytest.fixture
 def trader(client, trader_headers):
@@ -203,7 +216,11 @@ def sale(client, auth_headers, transaction, product):
 def credit(client, auth_headers, trader):
     response = client.post(
         "/credits/",
-        json={"trader_id": trader["trader_id"], "customer_name": "Bekele", "amount_owed": "50.00"},
+        json={
+            "trader_id": trader["trader_id"],
+            "customer_name": "Bekele",
+            "amount_owed": "50.00",
+        },
         headers=auth_headers,
     )
     assert response.status_code == 201, f"Credit creation failed: {response.text}"
@@ -215,7 +232,12 @@ def price_index_point(client, admin_headers):
     """Price index rows are shared reference data — only admins can write them."""
     response = client.post(
         "/price-index/",
-        json={"country": "Ethiopia", "category": "staples", "month": "2026-08-01", "index_value": "142.5"},
+        json={
+            "country": "Ethiopia",
+            "category": "staples",
+            "month": "2026-08-01",
+            "index_value": "142.5",
+        },
         headers=admin_headers,
     )
     assert response.status_code == 201, f"Price index creation failed: {response.text}"
